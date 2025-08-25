@@ -1,0 +1,102 @@
+import random
+
+def generate_code():
+    """Generate a random 5-digit verification code."""
+    return str(random.randint(10000, 99999))
+
+# --- LOGIN SYSTEM FIRST ---
+print("===== LOGIN SYSTEM =====")
+username = input("Enter username: ")
+password = input("Enter password: ")
+
+# Step 1: Generate and show the verification code
+login_code = generate_code()
+print(f"\n🔐 Your login verification code is: {login_code}")
+
+# Step 2: Ask user to enter the code
+entered_code = input("Enter the verification code to proceed: ")
+
+# Verify the code
+if entered_code != login_code:
+    print("\n❌ Incorrect verification code. Access Denied.")
+    exit()
+
+# Successful login
+print(f"\nWelcome {username}! Login Successful ✅")
+
+# List of common spam keywords
+spam_keywords = [
+    "win", "free", "urgent", "prize", "lottery", "money", "offer", "click",
+    "buy now", "limited time", "congratulations", "credit", "investment", "gift"
+]
+
+# Function to check spam score and matched keywords
+def check_spam(email_text):
+    email_text = email_text.lower()  # Convert to lowercase
+    score = 0
+    matched_keywords = []
+
+    # Check spam keywords
+    for word in spam_keywords:
+        if word in email_text:
+            score += 1
+            matched_keywords.append(word)
+
+    # Check suspicious links
+    for word in email_text.split():
+        if word.startswith("http"):
+            score += 2
+
+    return score, matched_keywords
+
+# --- MAIN PROGRAM LOOP ---
+while True:
+    print("\n===== SPAM EMAIL DETECTOR =====")
+
+    # 🛡 Require verification before checking email
+    session_code = generate_code()
+    print(f"\n🔐 Your session verification code is: {session_code}")
+    entered_session_code = input("Enter this code to check email: ")
+
+    if entered_session_code != session_code:
+        print("\n❌ Incorrect code. Cannot proceed.")
+        continue
+
+    # User inputs email content
+    email_content = input("\nPaste your email content here:\n")
+
+    # Calculate spam score and matched keywords
+    spam_score, matched_keywords = check_spam(email_content)
+
+    # Classification
+    if spam_score >= 4:
+        print("\nResult: This email is SPAM 🚫")
+    elif spam_score >= 2:
+        print("\nResult: This email looks Suspicious 🤔")
+    else:
+        print("\nResult: This email is Safe ✅")
+
+    # Show matched spam keywords
+    if matched_keywords:
+        print("\n🔎 Matched Spam Keywords:")
+        print(", ".join(matched_keywords))
+    else:
+        print("\n✅ No spam keywords found.")
+
+    # Save result to file
+    with open("spam_results.txt", "a", encoding="utf-8") as file:
+        file.write(f"Email: {email_content[:50]}...\n")
+        file.write(f"Spam Score: {spam_score}\n")
+        if matched_keywords:
+            file.write(f"Matched Keywords: {', '.join(matched_keywords)}\n")
+        else:
+            file.write("Matched Keywords: None\n")
+        file.write("="*40 + "\n\n")
+
+    print("\n📁 Analysis saved in 'spam_results.txt'")
+
+    # Choice to continue or exit
+    choice = input("\nDo you want to check another email? (yes/no): ").strip().lower()
+    if choice != "yes":
+        print("\nThank you for using Spam Email Detector. Goodbye 👋")
+        break
