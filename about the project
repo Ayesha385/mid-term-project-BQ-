@@ -1,4 +1,2 @@
 project: "Spam Email Detector"
-This project checks spam emails. Firstly you need to log in than it gives you a verification code for the security of your account then after successful login it gives verification code once
-again for saving you emails than it asks for the email you want to check. It checks the email in three categories 'safe, suspicious and spam' and after checking it thoroughly it will categories
-the email in safe, suspicious or either spam based on the words used in the email.
+This project checks spam emails. Firstly you need to log in than it gives you a verification code for the security of your account then after successful login it gives verification code once again for saving you emails than it asks for the email you want to check. It checks the email in three categories 'safe, suspicious and spam' and after checking it thoroughly it will categories the email in safe, suspicious or either spam based on the words used in the email.
